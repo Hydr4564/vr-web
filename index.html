@@ -14,7 +14,8 @@
     </script>
   </head>
   <body>
-    <a-scene>
+    <!-- vr-mode-ui="enabled: true" は標準のVRボタンを表示する設定です -->
+    <a-scene vr-mode-ui="enabled: true">
       <a-camera>
         <a-cursor fuse="true" fuse-timeout="1500" color="yellow"></a-cursor>
       </a-camera>
@@ -26,5 +27,12 @@
       ></a-sphere>
       <a-sky color="#ECECEC"></a-sky>
     </a-scene>
+
+    <!-- 画面全体をタップした時に、強制的にVRの2画面モードを起動するスクリプト -->
+    <script>
+      document.querySelector("a-scene").addEventListener("click", function () {
+        this.enterVR(); // これが「2眼に分割してVR空間に入る」という命令です
+      });
+    </script>
   </body>
 </html>
