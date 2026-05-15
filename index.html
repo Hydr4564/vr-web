@@ -3,44 +3,29 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <!-- キャッシュ（古いデータ）を残させない設定 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     
+    <!-- ★ここが全画面（アプリモード）にするための魔法のコード★ -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- ★ここまで★ -->
+
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 
     <style>
-      /* スマホで見やすいメニュー画面のデザイン */
       #menu-screen {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         display: flex; flex-direction: column;
         justify-content: center; align-items: center;
-        background-color: rgba(0, 0, 0, 0.7); /* 半透明の黒背景 */
-        z-index: 9999; /* 3D空間より手前に表示 */
+        background-color: rgba(0, 0, 0, 0.7); z-index: 9999;
       }
-      .panel {
-        background: white; padding: 30px; border-radius: 15px;
-        text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-      }
-      .btn-vr {
-        background: #ff4757; color: white; border: none;
-        padding: 15px 30px; font-size: 20px; font-weight: bold;
-        border-radius: 30px; margin-top: 20px; cursor: pointer;
-        width: 100%;
-      }
-      .btn-reload {
-        background: #f1f2f6; color: #2f3542; border: 1px solid #ced6e0;
-        padding: 10px 20px; font-size: 16px;
-        border-radius: 10px; margin-top: 15px; cursor: pointer;
-        width: 100%;
-      }
-      .version-text {
-        color: #747d8c; font-size: 14px; margin-top: 10px;
-      }
+      .panel { background: white; padding: 30px; border-radius: 15px; text-align: center; }
+      .btn-vr { background: #ff4757; color: white; border: none; padding: 15px 30px; font-size: 20px; font-weight: bold; border-radius: 30px; margin-top: 20px; cursor: pointer; width: 100%; }
+      .btn-reload { background: #f1f2f6; color: #2f3542; border: 1px solid #ced6e0; padding: 10px 20px; font-size: 16px; border-radius: 10px; margin-top: 15px; cursor: pointer; width: 100%; }
+      .version-text { color: #747d8c; font-size: 14px; margin-top: 10px; }
     </style>
 
     <script>
-      // 1. 的を見つめると消える仕組み
       AFRAME.registerComponent('hide-on-click', {
         init: function () {
           this.el.addEventListener('click', function () {
@@ -48,17 +33,11 @@
           });
         }
       });
-
-      // 2. VRモードを開始する仕組み
       function startVR() {
         var scene = document.querySelector('a-scene');
-        // メニュー画面を隠す
         document.getElementById('menu-screen').style.display = 'none';
-        // 強制的にVRモード（左右2分割）に入る
         scene.enterVR();
       }
-
-      // 3. VRモードを終了した時にメニューを再表示する仕組み
       window.addEventListener('load', function () {
         var scene = document.querySelector('a-scene');
         scene.addEventListener('exit-vr', function () {
@@ -68,37 +47,20 @@
     </script>
   </head>
   <body>
-
-    <!-- 分かりやすいメニュー画面 -->
     <div id="menu-screen">
       <div class="panel">
         <h2 style="margin-top:0;">的当てVRゲーム</h2>
         <p>スマホを横向きにして<br>ボタンを押してください</p>
-        
-        <!-- 大きなVR開始ボタン -->
         <button class="btn-vr" onclick="startVR()">🥽 VRモードで開始</button>
-        
-        <!-- 更新ボタン -->
         <button class="btn-reload" onclick="location.reload(true)">🔄 画面を最新に更新</button>
-        
-        <!-- バージョン番号（コードを書き換えるたびに数字を増やしてください） -->
-        <p class="version-text">現在のバージョン: 2.0</p>
+        <p class="version-text">現在のバージョン: 2.1</p>
       </div>
     </div>
 
-    <!-- 3D空間（vr-mode-ui="enabled: false" でA-Frame標準の小さなボタンを消しています） -->
     <a-scene vr-mode-ui="enabled: false">
-      <a-camera>
-        <!-- 視線カーソル（1.5秒見つめるとクリック） -->
-        <a-cursor fuse="true" fuse-timeout="1500" color="yellow"></a-cursor>
-      </a-camera>
-
-      <!-- 的になる赤い球 -->
+      <a-camera><a-cursor fuse="true" fuse-timeout="1500" color="yellow"></a-cursor></a-camera>
       <a-sphere position="0 1.5 -3" radius="0.5" color="#EF2D5E" hide-on-click></a-sphere>
-      
-      <!-- 背景色 -->
       <a-sky color="#ECECEC"></a-sky>
     </a-scene>
-
   </body>
 </html>
