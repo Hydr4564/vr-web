@@ -1,38 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <!-- 対策3: ブラウザにキャッシュ（古いデータ）を残させないおまじない -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script>
       // 見つめると消える仕組み
-      AFRAME.registerComponent("hide-on-click", {
+      AFRAME.registerComponent('hide-on-click', {
         init: function () {
-          this.el.addEventListener("click", function (evt) {
-            this.setAttribute("visible", "false");
+          this.el.addEventListener('click', function (evt) {
+            this.setAttribute('visible', 'false');
           });
-        },
+        }
       });
     </script>
   </head>
   <body>
-    <!-- vr-mode-ui="enabled: true" は標準のVRボタンを表示する設定です -->
-    <a-scene vr-mode-ui="enabled: true">
+    <!-- 対策2: 画面左上に強制リロードボタンとバージョン情報を表示 -->
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 999; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px;">
+      <p style="margin: 0; font-size: 14px; font-weight: bold;">現在のVer: 1.1</p>
+      <button onclick="location.reload(true)" style="margin-top: 5px; padding: 5px 10px;">🔄 最新状態に更新</button>
+    </div>
+
+    <a-scene>
       <a-camera>
         <a-cursor fuse="true" fuse-timeout="1500" color="yellow"></a-cursor>
       </a-camera>
-      <a-sphere
-        position="0 1.5 -3"
-        radius="0.5"
-        color="#EF2D5E"
-        hide-on-click
-      ></a-sphere>
+
+      <!-- 対策1: VR空間の中にもバージョン番号を文字で表示する -->
+      <!-- コードを変更するたびに、ここの value="Ver 1.1" の数字を変えてください -->
+      <a-text value="Ver 1.1" position="-0.5 2.5 -3" color="black" width="5"></a-text>
+
+      <!-- 的になる赤い球 -->
+      <a-sphere position="0 1.5 -3" radius="0.5" color="#EF2D5E" hide-on-click></a-sphere>
+      
       <a-sky color="#ECECEC"></a-sky>
     </a-scene>
-
-    <!-- 画面全体をタップした時に、強制的にVRの2画面モードを起動するスクリプト -->
-    <script>
-      document.querySelector("a-scene").addEventListener("click", function () {
-        this.enterVR(); // これが「2眼に分割してVR空間に入る」という命令です
-      });
-    </script>
   </body>
 </html>
