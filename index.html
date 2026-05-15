@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script>
+      // 見つめると消える仕組み
+      AFRAME.registerComponent("hide-on-click", {
+        init: function () {
+          this.el.addEventListener("click", function (evt) {
+            this.setAttribute("visible", "false");
+          });
+        },
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-camera>
+        <a-cursor fuse="true" fuse-timeout="1500" color="yellow"></a-cursor>
+      </a-camera>
+      <a-sphere
+        position="0 1.5 -3"
+        radius="0.5"
+        color="#EF2D5E"
+        hide-on-click
+      ></a-sphere>
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+  </body>
+</html>
